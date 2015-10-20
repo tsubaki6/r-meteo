@@ -12,6 +12,14 @@ function($scope,$http){
   .error(function(){
     console.log('BLAD');
   })
+
+    $http.get('http://pogoda.interia.pl/prognoza-dlugoterminowa-krakow,cId,4970')
+    .success(function(data){
+          $scope.dane2 = data;
+    })
+    .error(function(){
+      console.log('BLAD');
+    })
 //  $http.get('api.yr.no/weatherapi/locationforecast/1.9/?lat=60.10;lon=9.58',
 //  {transformResponse:function(data) {
 //                      // convert the data to JSON and provide
