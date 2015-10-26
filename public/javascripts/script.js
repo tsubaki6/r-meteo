@@ -28,7 +28,7 @@ function($scope,$http){
 //          console.log(forecast);
           wunderground[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind}
         }
-    console.log(wunderground);
+   // console.log(wunderground);
   })
   .error(function(){
     console.log('BLAD');
@@ -79,21 +79,33 @@ function($scope,$http){
             qpf = parseFloat(forecast.getElementsByClassName("weather-forecast-longterm-list-entry-precipitation-value")[i].innerHTML.replace(",","."));
             interia[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind}
          }
-          console.log(interia);
+         // console.log(interia);
 
     })
     .error(function(){
       console.log('BLAD');
     })
-
   $http.get('http://api.yr.no/weatherapi/locationforecast/1.9/?lat=50.04;lon=19.57')
   .success(function(data){
         $scope.dane3 = data;
-  })
+        var parser = new DOMParser().parseFromString(data,"application/xml");
 
+  })
+var meteo;
   $http.get('http://meteo.ftj.agh.edu.pl/meteo/meteo.xml')
       .success(function(data){
         $scope.meteo = data;
+         var parser = new DOMParser().parseFromString(data,"application/xml");
+         var forecast = parser.getElementsByTagName("dane_aktualne")[0];
+         days = 0;
+         temperature = forecast.getElementsByTagName("ta")[0].innerHTML;
+         temperature = temperature.split(" ")[0];
+         wind = forecast.getElementsByTagName("sm")[0].innerHTML;
+         wind = parseFloat(wind.split(" ")[0])*3.6;
+         qpf = forecast.getElementsByTagName("rc")[0].innerHTML;
+         qpf = qpf.split(" ")[0]
+         meteo = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind};
+         console.log(meteo)
       })
       .error(function(){
         console.log('BLAD');
