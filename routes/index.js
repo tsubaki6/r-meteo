@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 });
 router.post('/',function(req,res, next){
     db.collection('forecast').insert(req.body);
+    res.send({})
 })
 module.exports = router;
 
