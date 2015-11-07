@@ -1,11 +1,11 @@
-var app = angular.module('r-meteo', []);
+var app = angular.module('flapperNews', []);
 
 app
-.state('forecast', {
-   url: '/forecast',
-   templateUrl: '/',
-   controller: 'MainCtrl'
- })
+//.state('forecast', {
+//   url: '/forecast',
+//   templateUrl: '/',
+//   controller: 'MainCtrl'
+// })
 .controller('MainCtrl', [
 '$scope','$http',
 function($scope,$http){
@@ -30,9 +30,11 @@ function($scope,$http){
           max = forecast["high"]["celsius"];
           temperature = (parseInt(min)+parseInt(max))/2;
           wind = forecast["avewind"]["kph"];//3600;
-          wunderground[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind}
+          wunderground[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind,"portal":"wunderground"}
         }
-   // console.log(wunderground);
+      $http.post('/',wunderground)
+        .success(function(){
+         })
   })
   .error(function(){
     console.log('BLAD');
@@ -81,9 +83,12 @@ function($scope,$http){
             temperature = (parseInt(min)+parseInt(max))/2;
             wind = parseInt(forecast.getElementsByClassName("weather-forecast-longterm-list-entry-wind-value")[i].innerHTML);
             qpf = parseFloat(forecast.getElementsByClassName("weather-forecast-longterm-list-entry-precipitation-value")[i].innerHTML.replace(",","."));
-            interia[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind}
+            interia[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind,"portal":"interia"}
          }
-         // console.log(interia);
+          console.log(interia);
+         $http.post('/', interia)
+            .success(function(){
+         })
 
     })
     .error(function(){
@@ -108,8 +113,11 @@ function($scope,$http){
          wind = parseFloat(wind.split(" ")[0])*3.6;
          qpf = forecast.getElementsByTagName("rc")[0].innerHTML;
          qpf = qpf.split(" ")[0]
-         meteo = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind};
+         meteo = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind,"portal":"meteo"};
          console.log(meteo)
+         $http.post('/',meteo)
+             .success(function(){
+         })
       })
       .error(function(){
         console.log('BLAD');
@@ -119,9 +127,6 @@ function($scope,$http){
 //      .success(function(){
 //        console.log('OKOKOKO');
 //      })
-//   $http.post('/forecast',{"a":1})
-//      .success(function(){
-//        console.log('OKOKOKO');
-//      })
+
 
 }]);
