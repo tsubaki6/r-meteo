@@ -1,6 +1,12 @@
-var app = angular.module('flapperNews', []);
+var app = angular.module('r-meteo', []);
 
-app.controller('MainCtrl', [
+app
+.state('forecast', {
+   url: '/forecast',
+   templateUrl: '/',
+   controller: 'MainCtrl'
+ })
+.controller('MainCtrl', [
 '$scope','$http',
 function($scope,$http){
   $scope.x = 'Hello world!';
@@ -24,8 +30,6 @@ function($scope,$http){
           max = forecast["high"]["celsius"];
           temperature = (parseInt(min)+parseInt(max))/2;
           wind = forecast["avewind"]["kph"];//3600;
-//          console.log(wind);
-//          console.log(forecast);
           wunderground[i] = {"days":days, "temperature":temperature, "qpf":qpf, "wind":wind}
         }
    // console.log(wunderground);
@@ -91,7 +95,7 @@ function($scope,$http){
         var parser = new DOMParser().parseFromString(data,"application/xml");
 
   })
-var meteo;
+  var meteo;
   $http.get('http://meteo.ftj.agh.edu.pl/meteo/meteo.xml')
       .success(function(data){
         $scope.meteo = data;
@@ -110,5 +114,14 @@ var meteo;
       .error(function(){
         console.log('BLAD');
       })
+
+//   $http.get('/forecast',{"a":1})
+//      .success(function(){
+//        console.log('OKOKOKO');
+//      })
+//   $http.post('/forecast',{"a":1})
+//      .success(function(){
+//        console.log('OKOKOKO');
+//      })
 
 }]);
