@@ -188,12 +188,21 @@ $http.get('http://api.yr.no/weatherapi/locationforecast/1.9/?lat=50.04;lon=19.57
                    //console.log("qfs"+qpfs[day][qpfs[day].length - 1]);
                }
            }
-       for (i=0;i<days.length;i++){
-           temperature = parseFloat(avg(temps[i]));
-           wind =  parseFloat(avg(winds[i]));
-           qpf =  parseFloat(avg(qpfs[i]));
-           yr[i] = {"days":days[i], "temperature":temperature, "qpf":qpf, "wind":wind, "portal":"yr","date":today};
-       }
+       for(i=0;i<days.length;i++){
+                    if(temps[i]==null || winds[i]==null || qpfs[i]==null){
+                        temperature = 0;
+                        wind = 0;
+                        qpf = 0;
+                    }
+                    else {
+                        temperature = parseFloat(avg(temps[i]));
+                        wind = parseFloat(avg(winds[i]));
+                        qpf = parseFloat(avg(qpfs[i]));
+                    }
+
+                    yr[i] = {"days":days[i], "temperature":temperature, "qpf":qpf, "wind":wind, "portal":"yr","date":today};
+                    //console.log(yr[i]);
+                }
     //   console.log('y');
    //    console.log(yr);
 //        $http.post('/',yr)
@@ -204,34 +213,42 @@ $http.get('http://api.yr.no/weatherapi/locationforecast/1.9/?lat=50.04;lon=19.57
        console.log('BLAD');
    })
 
-$http.get('/forecast')
-.success(function(data){
-	var dane = data;
-	$scope.chartWunderground = [];
-	$scope.iloscDni = 7;
-	$scope.typ="";
-	var i;
-	//console.log(dane);
-	for(i=0;i<dane.length;i++){
-	pastDate(dane[i]["days"]);
-		if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<$scope.iloscDni && dane[i]["date"]== $scope.pastDate ){
-			console.log(dane[i]);
-            $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i]["qpf"]})
-		}
-	}
-	console.log($scope.chartWunderground)
-	chart();
-})
 $scope.print = function(){
-	//console.log($scope.iloscDni);
-	//console.log($scope.typ);
-	chart();
+	console.log($scope.iloscDni);
+	console.log($scope.typ);
+	//chart();
+	if($scope.iloscDni!=undefined && $scope.typ!=undefined){
+
+        $http.get('/forecast')
+        .success(function(data){
+            var dane = data;
+            $scope.chartWunderground = [];
+            $scope.chartYrNo = [];
+            $scope.chartInteria = [];
+            var i;
+            //console.log(dane);
+            for(i=0;i<dane.length;i++){
+            var data = new Date();
+            data.setDate(data.getDate()-dane[i]["days"]);
+            var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
+                if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<$scope.iloscDni && dane[i]["date"]== pastDate ){
+                    console.log(dane[i]);
+                    $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typ]})
+                }
+            }
+            console.log($scope.chartWunderground)
+            chart();
+        })
+        .error(function(){
+            console.log("BLAD")
+        })
+    }
 }
 
 var pastDate = function(count){
 	var data = new Date();
    data.setDate(data.getDate()-count);
-   $scope.pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
+   var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
  }
 var d = pastDate(30);
 //console.log(d);
@@ -273,7 +290,10 @@ AmCharts.makeChart("chartdiv",{
                               			"text": "Chart Title"
                               		}
                               	],
-                              	"dataProvider": $scope.chartWunderground
+                              	"dataProvider": $scope.chartWunderground,
+                              	"export":{
+                              	    "enabled": true
+                                  }
                               })
                               }
 }]);
