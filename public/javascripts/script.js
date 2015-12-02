@@ -225,9 +225,6 @@ $scope.printW = function(){
                 var value;
                  if(dane[i]["portal"]=="meteo" && dane[i]["date"]==(data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear())){
                     value = dane[i][$scope.typW];
-                    console.log(value);
-                    console.log('--')
-
                  }
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
@@ -283,7 +280,6 @@ $scope.printI = function(){
             var value;
              if(dane[i]["portal"]=="meteo" && dane[i]["date"]==(data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear())){
                 value = dane[i][$scope.typI];
-                console.log(value)
              }
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
@@ -313,6 +309,12 @@ AmCharts.makeChart("chartdiv"+portal,{
                               	"categoryAxis": {
                               		"gridPosition": "start"
                               	},
+                              		"chartCursor": {
+                                		"enabled": true
+                                	},
+                                	"chartScrollbar": {
+                                		"enabled": true
+                                	},
                               	"trendLines": [],
                               	"graphs": [
                               		{
