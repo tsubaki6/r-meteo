@@ -228,7 +228,7 @@ $scope.printW = function(){
                  }
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
-                if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<$scope.iloscDniW && dane[i]["date"]== pastDate ){
+                if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<=$scope.iloscDniW && dane[i]["date"]== pastDate ){
                     $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typW]})
                 }
             }
@@ -256,7 +256,7 @@ $scope.printY = function(){
             }
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
-                if(dane[i]["portal"]=="yr" && dane[i]["days"]<$scope.iloscDniY && dane[i]["date"]== pastDate ){
+                if(dane[i]["portal"]=="yr" && dane[i]["days"]<=$scope.iloscDniY && dane[i]["date"]== pastDate ){
                     $scope.chartYrNo.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typY]})
                 }
             }
@@ -283,7 +283,7 @@ $scope.printI = function(){
              }
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
-                if(dane[i]["portal"]=="interia" && dane[i]["days"]<$scope.iloscDniI && dane[i]["date"]== pastDate ){
+                if(dane[i]["portal"]=="interia" && dane[i]["days"]<=$scope.iloscDniI && dane[i]["date"]== pastDate ){
                     $scope.chartInteria.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typI]})
                 }
             }
