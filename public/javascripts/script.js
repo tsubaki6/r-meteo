@@ -222,11 +222,14 @@ $scope.printW = function(){
             var i;
             for(i=0;i<dane.length;i++){
             var data = new Date();
+            var data2 = new Date();
+            data2.setDate(data.getDate()-7)
                 var value;
-                 if(dane[i]["portal"]=="meteo" && dane[i]["date"]==(data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear())){
+                 if(dane[i]["portal"]=="meteo" && dane[i]["date"]==((data2.getDate())+"-"+(data2.getMonth()+1)+"-"+data2.getFullYear())){
                     value = dane[i][$scope.typW];
                  }
             data.setDate(data.getDate()-dane[i]["days"]-7);
+
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
                 if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<=$scope.iloscDniW && dane[i]["date"]== pastDate && dane[i]["days"]>0 ){
                     $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typW]})
@@ -251,9 +254,12 @@ $scope.printY = function(){
             for(i=0;i<dane.length;i++){
             var data = new Date();
              var value;
-             if(dane[i]["portal"]=="meteo" && dane[i]["date"]==(data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear())){
-                value = dane[i][$scope.typY];
-            }
+            var data2 = new Date();
+            data2.setDate(data.getDate()-7)
+                var value;
+                 if(dane[i]["portal"]=="meteo" && dane[i]["date"]==((data2.getDate())+"-"+(data2.getMonth()+1)+"-"+data2.getFullYear())){
+                    value = dane[i][$scope.typW];
+                 }
             data.setDate(data.getDate()-dane[i]["days"]-7);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
                 if(dane[i]["portal"]=="yr" && dane[i]["days"]<=$scope.iloscDniY && dane[i]["date"]== pastDate && dane[i]["days"]>0 ){
@@ -278,9 +284,12 @@ $scope.printI = function(){
             for(i=0;i<dane.length;i++){
             var data = new Date();
             var value;
-             if(dane[i]["portal"]=="meteo" && dane[i]["date"]==(data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear())){
-                value = dane[i][$scope.typI];
-             }
+            var data2 = new Date();
+            data2.setDate(data.getDate()-7)
+                var value;
+                 if(dane[i]["portal"]=="meteo" && dane[i]["date"]==((data2.getDate())+"-"+(data2.getMonth()+1)+"-"+data2.getFullYear())){
+                    value = dane[i][$scope.typW];
+                 }
             data.setDate(data.getDate()-dane[i]["days"]-7);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
                 if(dane[i]["portal"]=="interia" && dane[i]["days"]<=$scope.iloscDniI && dane[i]["date"]== pastDate && dane[i]["days"]>0 ){
