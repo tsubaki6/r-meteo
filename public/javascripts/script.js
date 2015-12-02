@@ -213,17 +213,73 @@ $http.get('http://api.yr.no/weatherapi/locationforecast/1.9/?lat=50.04;lon=19.57
        console.log('BLAD');
    })
 
-$scope.print = function(){
+$scope.printW = function(){
 	console.log($scope.iloscDni);
 	console.log($scope.typ);
 	//chart();
-	if($scope.iloscDni!=undefined && $scope.typ!=undefined){
+	if($scope.iloscDniW!=undefined && $scope.typW!=undefined){
 
         $http.get('/forecast')
         .success(function(data){
             var dane = data;
             $scope.chartWunderground = [];
+            var i;
+            //console.log(dane);
+            for(i=0;i<dane.length;i++){
+            var data = new Date();
+            data.setDate(data.getDate()-dane[i]["days"]);
+            var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
+                if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<$scope.iloscDniW && dane[i]["date"]== pastDate ){
+                    console.log(dane[i]);
+                    $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typW]})
+                }
+            }
+            console.log($scope.chartWunderground)
+            chart($scope.chartWunderground,"Wunderground");
+        })
+        .error(function(){
+            console.log("BLAD")
+        })
+    }
+}
+$scope.printY = function(){
+	console.log($scope.iloscDni);
+	console.log($scope.typ);
+	//chart();
+	if($scope.iloscDniY!=undefined && $scope.typY!=undefined){
+
+        $http.get('/forecast')
+        .success(function(data){
+            var dane = data;
             $scope.chartYrNo = [];
+            var i;
+            //console.log(dane);
+            for(i=0;i<dane.length;i++){
+            var data = new Date();
+            data.setDate(data.getDate()-dane[i]["days"]);
+            var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
+                if(dane[i]["portal"]=="yr" && dane[i]["days"]<$scope.iloscDniY && dane[i]["date"]== pastDate ){
+                    console.log(dane[i]);
+                    $scope.chartYrNo.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typY]})
+                }
+            }
+            console.log($scope.chartWunderground)
+            chart($scope.chartYrNo,"Yrno");
+        })
+        .error(function(){
+            console.log("BLAD")
+        })
+    }
+}
+$scope.printI = function(){
+	console.log($scope.iloscDni);
+	console.log($scope.typ);
+	//chart();
+	if($scope.iloscDniI!=undefined && $scope.typI!=undefined){
+
+        $http.get('/forecast')
+        .success(function(data){
+            var dane = data;
             $scope.chartInteria = [];
             var i;
             //console.log(dane);
@@ -231,20 +287,19 @@ $scope.print = function(){
             var data = new Date();
             data.setDate(data.getDate()-dane[i]["days"]);
             var pastDate =  data.getDate()+"-"+(data.getMonth()+1)+"-"+data.getFullYear();
-                if(dane[i]["portal"]=="wunderground" && dane[i]["days"]<$scope.iloscDni && dane[i]["date"]== pastDate ){
+                if(dane[i]["portal"]=="interia" && dane[i]["days"]<$scope.iloscDniI && dane[i]["date"]== pastDate ){
                     console.log(dane[i]);
-                    $scope.chartWunderground.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typ]})
+                    $scope.chartInteria.push({"days":dane[i]["days"], "parametr":dane[i][$scope.typI]})
                 }
             }
             console.log($scope.chartWunderground)
-            chart();
+            chart($scope.chartInteria,"Interia");
         })
         .error(function(){
             console.log("BLAD")
         })
     }
 }
-
 var pastDate = function(count){
 	var data = new Date();
    data.setDate(data.getDate()-count);
@@ -252,8 +307,8 @@ var pastDate = function(count){
  }
 var d = pastDate(30);
 //console.log(d);
-var chart = function(){
-AmCharts.makeChart("chartdiv",{
+var chart = function(dane,portal){
+AmCharts.makeChart("chartdiv"+portal,{
                               	"type": "serial",
                               	"categoryField": "days",
                               	"startDuration": 1,
@@ -290,7 +345,7 @@ AmCharts.makeChart("chartdiv",{
                               			"text": "Chart Title"
                               		}
                               	],
-                              	"dataProvider": $scope.chartWunderground,
+                              	"dataProvider": dane,
                               	"export":{
                               	    "enabled": true
                                   }
